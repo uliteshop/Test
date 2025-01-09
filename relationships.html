@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Table Relationships Documentation</title>
+  <style>
+    body {
+      font-family: "Arial", sans-serif;
+      background-color: #e8f5f7;
+      color: #333;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    }
+    h1, h2 {
+      font-family: "Georgia", serif;
+      color: #004d61;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+    h2 {
+      margin-top: 30px;
+      font-size: 1.5em;
+    }
+    p {
+      margin: 10px 0;
+    }
+    .container {
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      margin: 5px 0;
+    }
+    li::before {
+      content: "• ";
+      color: #008080;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>เอกสาร Relation ระหว่าง Tables</h1>
+
+    <h2>CustomerTable (CT)</h2>
+    <ul>
+      <li><b>CustomerTableGUID</b> ใช้ในการ Join กับ <b>CreditAppTable.CustomerTableGUID</b></li>
+      <li><b>RegistrationTypeGUID</b> ใช้ในการ Join กับ <b>RegistrationType.RegistrationTypeGUID</b></li>
+      <li><b>LineOfBusinessGUID</b> ใช้ในการ Join กับ <b>LineOfBusiness.LineOfBusinessGUID</b></li>
+    </ul>
+
+    <h2>CreditAppTable (CAT)</h2>
+    <ul>
+      <li><b>CreditAppTableGUID</b> ใช้ในการ Join กับ <b>PurchaseTable.CreditAppTableGUID</b></li>
+      <li><b>CustomerTableGUID</b> ใช้ในการ Join กับ <b>CustomerTable.CustomerTableGUID</b></li>
+    </ul>
+
+    <h2>PurchaseTable (PCT)</h2>
+    <ul>
+      <li><b>CreditAppTableGUID</b> ใช้ในการ Join กับ <b>CreditAppTable.CreditAppTableGUID</b></li>
+      <li><b>PurchaseTableGUID</b> ใช้ในการ Join กับ <b>PurchaseLine.PurchaseTableGUID</b></li>
+    </ul>
+
+    <h2>PurchaseLine (PCL)</h2>
+    <ul>
+      <li><b>PurchaseTableGUID</b> ใช้ในการ Join กับ <b>PurchaseTable.PurchaseTableGUID</b></li>
+      <li><b>PurchaseLineInvoiceTableGUID</b> ใช้ในการ Join กับ <b>InvoiceTable.InvoiceTableGUID</b></li>
+    </ul>
+
+    <h2>InvoiceTable (IVT)</h2>
+    <ul>
+      <li><b>InvoiceTableGUID</b> ใช้ในการ Join กับ <b>PurchaseLine.PurchaseLineInvoiceTableGUID</b></li>
+    </ul>
+
+    <h2>RegistrationType (RGT)</h2>
+    <ul>
+      <li><b>RegistrationTypeGUID</b> ใช้ในการ Join กับ <b>CustomerTable.RegistrationTypeGUID</b></li>
+    </ul>
+
+    <h2>LineOfBusiness (LOB)</h2>
+    <ul>
+      <li><b>LineOfBusinessGUID</b> ใช้ในการ Join กับ <b>CustomerTable.LineOfBusinessGUID</b></li>
+    </ul>
+  </div>
+</body>
+</html>
