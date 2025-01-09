@@ -1,1 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test - Data Analysis</title>
+  <style>
+    body {
+      font-family: "Arial", sans-serif;
+      background-color: #f0f8fa;
+      color: #333;
+      padding: 20px;
+    }
+    h1 {
+      font-family: "Georgia", serif;
+      font-size: 2em;
+      color: #007b83;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    .button {
+      background-color: #008c99;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      margin-top: 20px;
+    }
+    .button:hover {
+      background-color: #006f77;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Data Analysis Test</h1>
+    <button class="button" onclick="loadData()">Load Data from Google Sheets</button>
+    <div id="data-container"></div>
+  </div>
+
+  <script>
+    const apiKey = "AIzaSyCE4HQ2RkAIo7EwUzhejioOVlIivLkX3sQ"; // ใส่ API Key ที่ได้จาก Google Developers Console
+    const spreadsheetId = "1KCvC710qo8lpWW89EtzVbmkRvDeymqxGYWyjJZdhaxU"; // ID ของ Google Sheets
+    const sheetNames = [
+      "CreditAppTable", "CustomerTable", "RegistrationType", "LineOfBusiness",
+      "PurchaseTable", "PurchaseLine", "InvoiceTable"
+    ];
+
+    function loadData() {
+      const sheetName = sheetNames[0]; // ลองดึงข้อมูลจาก CreditAppTable ก่อน (สามารถเลือกอื่นๆได้)
+      const range = sheetName + "!A:Z"; // เลือกช่วงของข้อมูล (เปลี่ยนให้ตรงกับชีทของคุณ)
+
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?key=${apiKey}`;
+
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          const rows = data.values;
+          displayData(rows);
+        })
+        .catch(error => console.error("Error fetching data: ", error));
+    }
+
+    function displayData(rows) {
+      let html = "<table><tr>";
+      
+      // สร้างหัวตาราง
+      if (rows && rows.length > 0) {
+        const headers = rows[0];
+        headers.forEach(header => {
+          html += `<th>${header}</th>`;
+        });
+        html += "</tr>";
+        
+        // แสดงข้อมูล
+        rows.slice(1).forEach(row => {
+          html += "<tr>";
+          row.forEach(cell => {
+            html += `<td>${cell}</td>`;
+          });
+          html += "</tr>";
+        });
+        html += "</table>";
+      } else {
+        html = "<p>No data available</p>";
+      }
+
+      document.getElementById("data-container").innerHTML = html;
+    }
+  </script>
+</body>
+</html>
 
