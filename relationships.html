@@ -47,6 +47,19 @@
       color: #008080;
       font-weight: bold;
     }
+    .description {
+      font-style: italic;
+      color: #555;
+      margin-top: 20px;
+    }
+    .image-container {
+      text-align: center;
+      margin-top: 30px;
+    }
+    img {
+      max-width: 80%;
+      border-radius: 8px;
+    }
   </style>
 </head>
 <body>
@@ -92,6 +105,21 @@
     <ul>
       <li><b>LineOfBusinessGUID</b> ใช้ในการ Join กับ <b>CustomerTable.LineOfBusinessGUID</b></li>
     </ul>
+
+    <div class="description">
+      <p><b>คำอธิบายความสัมพันธ์ระหว่าง Table:</b></p>
+      <ul>
+        <li>1 Customer : สามารถมี Credit ได้ 1 Credit</li>
+        <li>1 Credit : สามารถมี Purchase ได้ มากกว่า 1 ครั้ง</li>
+        <li>1 Purchase : สามารถมี Purchaseline ได้ มากกว่า 1 ใบ (กล่าวคือ การรับซื้อในหนึ่งครั้ง อาจจะมี บิลมาหลายใบ)</li>
+        <li>1 Purchaseline : สามารถมี Invoice ได้ มากกว่า 1 ใบ</li>
+      </ul>
+    </div>
+
+    <div class="image-container">
+      <img src="Im1.jpg" alt="Table Relationships Diagram">
+    </div>
+
   </div>
 </body>
 </html>
