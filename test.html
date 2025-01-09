@@ -3,26 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Test - Data Analysis</title>
+  <title>Data from Google Sheets</title>
   <style>
     body {
-      font-family: "Arial", sans-serif;
-      background-color: #f0f8fa;
-      color: #333;
-      padding: 20px;
-    }
-    h1 {
-      font-family: "Georgia", serif;
-      font-size: 2em;
-      color: #007b83;
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: #fff;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      border-radius: 10px;
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f4f9fc;
     }
     table {
       width: 100%;
@@ -30,84 +16,86 @@
       margin-top: 20px;
     }
     th, td {
-      padding: 10px;
-      text-align: left;
+      padding: 8px 12px;
       border: 1px solid #ddd;
+      text-align: left;
     }
     th {
-      background-color: #f4f4f4;
+      background-color: #f2f2f2;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
     }
     .button {
-      background-color: #008c99;
-      color: white;
       padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
       border: none;
-      margin-top: 20px;
+      cursor: pointer;
+      border-radius: 5px;
     }
     .button:hover {
-      background-color: #006f77;
+      background-color: #45a049;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Data Analysis Test</h1>
-    <button class="button" onclick="loadData()">Load Data from Google Sheets</button>
+    <h1>Data from Google Sheets</h1>
+    <button class="button" onclick="loadData()">Load Data</button>
     <div id="data-container"></div>
   </div>
 
   <script>
-    const apiKey = "AIzaSyCE4HQ2RkAIo7EwUzhejioOVlIivLkX3sQ"; // ใส่ API Key ที่ได้จาก Google Developers Console
-    const spreadsheetId = "1KCvC710qo8lpWW89EtzVbmkRvDeymqxGYWyjJZdhaxU"; // ID ของ Google Sheets
-    const sheetNames = [
-      "CreditAppTable", "CustomerTable", "RegistrationType", "LineOfBusiness",
-      "PurchaseTable", "PurchaseLine", "InvoiceTable"
-    ];
+    const apiKey = 'AIzaSyCE4HQ2RkAIo7EwUzhejioOVlIivLkX3sQ'; // ใส่ API Key ที่ได้จาก Google Developers Console
+    const spreadsheetId = '1KCvC710qo8lpWW89EtzVbmkRvDeymqxGYWyjJZdhaxU'; // ใช้ ID ของ Google Sheets
 
+    // ฟังก์ชันสำหรับโหลดข้อมูล
     function loadData() {
-      const sheetName = sheetNames[0]; // ลองดึงข้อมูลจาก CreditAppTable ก่อน (สามารถเลือกอื่นๆได้)
-      const range = sheetName + "!A:Z"; // เลือกช่วงของข้อมูล (เปลี่ยนให้ตรงกับชีทของคุณ)
-
+      const range = 'CreditAppTable!A1:Z'; // ระบุชื่อชีทและช่วงข้อมูลที่ต้องการ
       const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?key=${apiKey}`;
-
+      
+      // ส่งคำขอไปยัง Google Sheets API
       fetch(url)
-        .then(response => response.json())
+        .then(response => response.json())  // แปลงข้อมูลที่ได้รับเป็น JSON
         .then(data => {
-          const rows = data.values;
-          displayData(rows);
+          if (data.values) {
+            displayData(data.values);
+          } else {
+            document.getElementById('data-container').innerHTML = '<p>No data found</p>';
+          }
         })
-        .catch(error => console.error("Error fetching data: ", error));
+        .catch(error => {
+          console.error('Error fetching data:', error);
+          document.getElementById('data-container').innerHTML = '<p>Error loading data</p>';
+        });
     }
 
+    // ฟังก์ชันแสดงข้อมูลในตาราง
     function displayData(rows) {
-      let html = "<table><tr>";
+      let html = '<table>';
       
-      // สร้างหัวตาราง
-      if (rows && rows.length > 0) {
-        const headers = rows[0];
-        headers.forEach(header => {
-          html += `<th>${header}</th>`;
-        });
-        html += "</tr>";
-        
-        // แสดงข้อมูล
-        rows.slice(1).forEach(row => {
-          html += "<tr>";
-          row.forEach(cell => {
-            html += `<td>${cell}</td>`;
-          });
-          html += "</tr>";
-        });
-        html += "</table>";
-      } else {
-        html = "<p>No data available</p>";
-      }
+      // สร้างหัวตารางจากแถวแรก
+      const headers = rows[0];
+      html += '<tr>';
+      headers.forEach(header => {
+        html += `<th>${header}</th>`;
+      });
+      html += '</tr>';
 
-      document.getElementById("data-container").innerHTML = html;
+      // แสดงข้อมูลในแต่ละแถว
+      rows.slice(1).forEach(row => {
+        html += '<tr>';
+        row.forEach(cell => {
+          html += `<td>${cell}</td>`;
+        });
+        html += '</tr>';
+      });
+      
+      html += '</table>';
+      document.getElementById('data-container').innerHTML = html;
     }
   </script>
 </body>
 </html>
-
